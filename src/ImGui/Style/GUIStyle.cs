@@ -27,12 +27,12 @@ namespace ImGui
             if (CurrentOS.IsAndroid)
             {
                 DefaultFontSize = 24;
-                DefaultFontFamily = "DroidSans.ttf";
+                DefaultFontFamily = Utility.FontNameAndroid;
             }
             else
             {
                 DefaultFontSize = 12;
-                DefaultFontFamily = Utility.FontDir + "msjh.ttf";
+                DefaultFontFamily = Utility.FontDir + Utility.FontPath;
             }
 
             Default = CreateDefaultStyle();

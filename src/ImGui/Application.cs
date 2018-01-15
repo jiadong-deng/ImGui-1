@@ -5,10 +5,11 @@ using System.Diagnostics;
 namespace ImGui
 {
     /// <summary>
-    /// Encapsulates a ImGui application.
+    /// Encapsulates an ImGui application.
     /// </summary>
     /// <remarks>
-    /// Application is a class that encapsulates application-specific functionality.
+    /// Application is a class that encapsulates application-level functionality.
+    /// 
     /// An application can be started in two ways:
     /// 1. If you have access to the main entry point, use
     /// <code>
@@ -22,6 +23,7 @@ namespace ImGui
     /// //then in the loop callback, call
     /// Application.RunLoop(mainForm);
     /// </code>
+    /// 
     /// </remarks>
     public static class Application
     {

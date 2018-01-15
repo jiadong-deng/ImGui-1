@@ -149,5 +149,8 @@ namespace ImGui
             return Path.GetDirectoryName(typeof(Application).GetTypeInfo().Assembly.Location) + Path.DirectorySeparatorChar + "assets/fonts" + Path.DirectorySeparatorChar;
         }
 
+        //HACK remove this if font-family in Typography is ready
+        public static string FontNameAndroid = "DroidSans.ttf";
+        public static string FontPath = "msjh.ttf";//"NotoSans\\NotoSans-Regular.ttf";
     }
 }
