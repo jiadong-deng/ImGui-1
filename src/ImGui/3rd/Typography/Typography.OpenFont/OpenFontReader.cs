@@ -91,7 +91,7 @@ namespace Typography.OpenFont
                 Glyf glyf = ReadTableIfExists(tables, input, new Glyf(glyphLocations));
                 //--------------
                 Gasp gaspTable = ReadTableIfExists(tables, input, new Gasp());
-                VerticalDeviceMatrics vdmx = ReadTableIfExists(tables, input, new VerticalDeviceMatrics());
+                VerticalDeviceMetrics vdmx = ReadTableIfExists(tables, input, new VerticalDeviceMetrics());
                 //--------------
                 PostTable postTable = ReadTableIfExists(tables, input, new PostTable());
                 Kern kern = ReadTableIfExists(tables, input, new Kern());
@@ -101,17 +101,17 @@ namespace Typography.OpenFont
                 GSUB gsub = ReadTableIfExists(tables, input, new GSUB());
                 GPOS gpos = ReadTableIfExists(tables, input, new GPOS());
                 BASE baseTable = ReadTableIfExists(tables, input, new BASE());
+                COLR colr = ReadTableIfExists(tables, input, new COLR());
+                CPAL cpal = ReadTableIfExists(tables, input, new CPAL());
                 VerticalHeader vhea = ReadTableIfExists(tables, input, new VerticalHeader());
                 if (vhea != null)
                 {
-                    VerticalMatric vmtx = ReadTableIfExists(tables, input, new VerticalMatric(vhea.NumOfLongVerMatrics));
+                    VerticalMatric vmtx = ReadTableIfExists(tables, input, new VerticalMatric(vhea.NumOfLongVerMetrics));
                 }
 
                 EBLCTable fontBmpTable = ReadTableIfExists(tables, input, new EBLCTable());
                 //---------------------------------------------
-                //about truetype instruction init
-
-
+                //about truetype instruction init 
 
                 //--------------------------------------------- 
                 var typeface = new Typeface(
@@ -119,13 +119,14 @@ namespace Typography.OpenFont
                     header.Bounds,
                     header.UnitsPerEm,
                     glyf.Glyphs,
-                    cmaps.CharMaps,
                     horizontalMetrics,
                     os2Table);
                 //----------------------------
+                typeface.CmapTable = cmaps;
                 typeface.KernTable = kern;
-                typeface.GaspTable = gaspTable;
+                typeface.GaspTable = gaspTable;               
                 typeface.MaxProfile = maximumProfile;
+                typeface.HheaTable = horizontalHeader;
                 //----------------------------
                 FpgmTable fpgmTable = ReadTableIfExists(tables, input, new FpgmTable());
                 //control values table
@@ -148,7 +149,9 @@ namespace Typography.OpenFont
                     gdef,
                     gsub,
                     gpos,
-                    baseTable);
+                    baseTable,
+                    colr,
+                    cpal);
                 return typeface;
             }
         }

@@ -1,10 +1,13 @@
-﻿//Apahce2, 2017, WinterDev
+﻿//Apache2, 2017, WinterDev
 //Apache2, 2014-2016, Samuel Carlsson, WinterDev
 
 using System;
 using System.IO;
 namespace Typography.OpenFont.Tables
 {
+    /// <summary>
+    /// hhea
+    /// </summary>
     class HorizontalHeader : TableEntry
     {
         //-----

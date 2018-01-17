@@ -4,7 +4,7 @@ using Typography.OpenFont;
 using Typography.OpenFont.Tables;
 namespace Typography.TextLayout
 {
- 
+
 
     /// <summary>
     /// glyph set position manager
@@ -24,12 +24,13 @@ namespace Typography.TextLayout
 
             if (gposTable == null) { return; }
 
-            ScriptTable scriptTable = gposTable.ScriptList.FindScriptTable(lang);
+            ScriptTable scriptTable = gposTable.ScriptList[lang];
             //---------
-            if (scriptTable == null) { return; }   //early exit if no lookup tables      
+            if (scriptTable == null) { return; }   // early exit if no lookup tables
                                                    //---------
 
             ScriptTable.LangSysTable defaultLang = scriptTable.defaultLang;
+            if (defaultLang == null) { return; }   // early exit if no default language
 
             if (defaultLang.HasRequireFeature)
             {
@@ -47,15 +48,21 @@ namespace Typography.TextLayout
                     switch (feature.TagName)
                     {
                         case "mark"://mark=> mark to base
-                        case "mkmk"://mkmk => mark to mask
-
+                        case "mkmk"://mkmk => mark to mask 
                             //current version we implement this 2 features
                             features.Add(feature);
                             break;
-                        default:
-                            {
+                        case "kern":
+                            //test with Candara font
+                            features.Add(feature);
+                            //If palt is activated, there is no requirement that kern must also be activated. 
+                            //If kern is activated, palt must also be activated if it exists.
+                            //https://www.microsoft.com/typography/OTSpec/features_pt.htm#palt
+                            break;
+                        case "palt":
 
-                            }
+                            break;
+                        default:
                             break;
                     }
 
@@ -68,21 +75,21 @@ namespace Typography.TextLayout
                 for (int i = 0; i < j; ++i)
                 {
                     FeatureList.FeatureTable feature = features[i];
-                    ushort[] lookupListIndices = feature.LookupListIndice;
-                    foreach (ushort lookupIndex in lookupListIndices)
+                    foreach (ushort lookupIndex in feature.LookupListIndices)
                     {
-                        lookupTables.Add(gposTable.GetLookupTable(lookupIndex));
+                        lookupTables.Add(gposTable.LookupList[lookupIndex]);
                     }
                 }
             }
 
         }
         public string Lang { get; private set; }
-        public void DoGlyphPosition(List<GlyphPos> glyphPositions)
+        public void DoGlyphPosition(IGlyphPositions glyphPositions)
         {
-
-            if (lookupTables == null) { return; } //early exit if no lookup tables
-                                                  //load
+            //early exit if no lookup tables
+            //load
+            if (lookupTables == null) { return; }
+            //
             int j = lookupTables.Count;
             for (int i = 0; i < j; ++i)
             {
